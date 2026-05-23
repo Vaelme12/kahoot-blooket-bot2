@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <title>Kahoot & Blooket Bot</title>
+  <style>
+    body { font-family: Arial; background: #111; color: white; text-align: center; padding: 50px; }
+    input, select, button { padding: 15px; margin: 10px; width: 350px; font-size: 17px; border-radius: 8px; }
+    button { background: #00ff00; color: black; font-weight: bold; cursor: pointer; }
+    button:hover { background: #00cc00; }
+  </style>
+</head>
+<body>
+  <h1>🎮 Kahoot & Blooket Bot</h1>
+  
+  <select id="game_type">
+    <option value="kahoot">Kahoot</option>
+    <option value="blooket">Blooket</option>
+  </select><br>
+  
+  <input type="text" id="pin" placeholder="Game PIN"><br>
+  <input type="text" id="base_name" placeholder="Bot Name" value="Bot"><br>
+  <input type="number" id="count" value="20" min="1" max="60"><br>
+  
+  <button onclick="startBots()">🚀 Bots starten</button>
+
+  <p id="status" style="margin-top: 30px; font-size: 19px;"></p>
+
+  <script>
+    async function startBots() {
+      const status = document.getElementById('status');
+      status.innerHTML = "Bots werden gestartet...";
+
+      const res = await fetch('/start', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({
+          game_type: document.getElementById('game_type').value,
+          pin: document.getElementById('pin').value,
+          base_name: document.getElementById('base_name').value,
+          count: document.getElementById('count').value
+        })
+      });
+
+      const data = await res.json();
+      status.innerHTML = data.message;
+    }
+  </script>
+</body>
+</html>
